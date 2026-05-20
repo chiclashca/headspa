@@ -21,9 +21,8 @@
         label { margin-right: 12px; cursor: pointer; display: inline-flex; align-items: center; }
         input[type="radio"], input[type="checkbox"] { margin-right: 5px; width: 18px; height: 18px; }
         
-        .notice-box { font-size: 13px; line-height: 1.6; margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 5px; color: #333; border: 1px solid #eee; }
+        .notice-box { font-size: 13px; line-height: 1.6; margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 50px; color: #333; border: 1px solid #eee; }
 
-        /* 签名区域修复 */
         .signature-section { margin-top: 30px; border-top: 2px solid #333; padding-top: 20px; }
         .signature-wrapper { border: 2px dashed #ccc; background: #fff; position: relative; width: 100%; max-width: 500px; height: 200px; margin-top: 10px; touch-action: none; }
         canvas { width: 100%; height: 100%; touch-action: none; display: block; }
@@ -48,8 +47,8 @@
 
     <div class="title">HEAD SPA AGREEMENT AND CONSENT FORM</div>
 
-    <div class="row"><div class="label">FIRST NAME:</div><input type="text"></div>
-    <div class="row"><div class="label">LAST NAME:</div><input type="text"></div>
+    <div class="row"><div class="label">FIRST NAME:</div><input type="text" id="firstName"></div>
+    <div class="row"><div class="label">LAST NAME:</div><input type="text" id="lastName"></div>
     <div class="row"><div class="label">PHONE NUMBER:</div><input type="text"></div>
     <div class="row"><div class="label">E-MAIL:</div><input type="email"></div>
     <div class="row"><div class="label">DATE OF BIRTH (MM/DD):</div><input type="text"></div>
@@ -104,7 +103,7 @@
     </div>
 </div>
 
-<button class="btn-save" onclick="window.print()">SAVE AS PDF</button>
+<button class="btn-save" onclick="saveAsPdf()">SAVE AS PDF</button>
 
 <script>
     const canvas = document.getElementById('signature-pad');
@@ -119,7 +118,6 @@
         if (signaturePad) signaturePad.clear();
     }
 
-    // 初始化逻辑
     window.onload = function() {
         signaturePad = new SignaturePad(canvas, {
             backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -134,6 +132,24 @@
         event.preventDefault();
         signaturePad.clear();
     });
+
+    function saveAsPdf() {
+        const first = document.getElementById('firstName').value.trim();
+        const last = document.getElementById('lastName').value.trim();
+        const originalTitle = document.title;
+        
+        if (first || last) {
+            document.title = first + "_" + last;
+        } else {
+            document.title = "Consent_Form";
+        }
+        
+        window.print();
+        
+        setTimeout(function() {
+            document.title = originalTitle;
+        }, 1000);
+    }
 </script>
 
 </body>
